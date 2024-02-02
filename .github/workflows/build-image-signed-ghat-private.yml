@@ -1,4 +1,4 @@
-name: image-signed-ghat(latest)
+name: image-signed-ghat(latest)-private
 on:
   workflow_dispatch:
 
