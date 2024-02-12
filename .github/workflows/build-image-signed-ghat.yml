@@ -36,7 +36,7 @@ jobs:
       - name: Generate SBOM with Syft
         id: sbom-gen
         run: |
-          syft packages docker-archive://ghcr.io/${{ github.repository }}:${{ steps.push-step.outputs.digest }} -o json > sbom.json
+          syft scan docker-archive://ghcr.io/${{ github.repository }}:${{ steps.push-step.outputs.digest }} -o json > sbom.json
 
       - name: Read SBOM into environment variable
         id: sbom-read
