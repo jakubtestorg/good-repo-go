@@ -29,9 +29,22 @@ jobs:
           tags: ghcr.io/${{ github.repository }}:latest
           context: .
 
+      - name: Generate SBOM with Syft
+        id: sbom-gen
+        run: |
+          syft packages docker-archive://ghcr.io/${{ github.repository }}:${{ steps.push-step.outputs.digest }} -o json > sbom.json
+
+      - name: Read SBOM into environment variable
+        id: sbom-read
+        run: |
+          SBOM_CONTENTS=$(cat sbom.json | base64)
+          echo "SBOM_CONTENTS=${SBOM_CONTENTS}" >> $GITHUB_ENV
+
       - name: Attest image
         uses: jhrozek/generate-build-provenance@add_sbom
         with:
           subject-name: ghcr.io/${{ github.repository }}
           subject-digest: ${{ steps.push-step.outputs.digest }}
           push-to-registry: true
+        env:
+          SBOM_CONTENTS: ${{ env.SBOM_CONTENTS }}
