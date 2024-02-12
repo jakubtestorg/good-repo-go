@@ -36,7 +36,7 @@ jobs:
       - name: Generate SBOM with Syft
         id: sbom-gen
         run: |
-          syft scan docker://${{ github.repository }}@${{ steps.push-step.outputs.digest }} -o json > sbom.json
+          syft scan docker://${{ github.repository }}:latest -o json > sbom.json
 
       - name: Read SBOM into environment variable
         id: sbom-read
