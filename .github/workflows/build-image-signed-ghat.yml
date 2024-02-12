@@ -39,12 +39,6 @@ jobs:
           syft scan registry:ghcr.io/${{ github.repository }}:latest -o json > sbom.json
           cat sbom.json
 
-      - name: Read SBOM into environment variable
-        id: sbom-read
-        run: |
-          SBOM_CONTENTS=$(cat sbom.json | base64)
-          echo "SBOM_CONTENTS=${SBOM_CONTENTS}" >> $GITHUB_ENV
-
       - name: Attest image
         uses: jhrozek/generate-build-provenance@add_sbom
         with:
@@ -52,4 +46,4 @@ jobs:
           subject-digest: ${{ steps.push-step.outputs.digest }}
           push-to-registry: true
         env:
-          SBOM_CONTENTS: ${{ env.SBOM_CONTENTS }}
+          SBOM_FILE_PATH: sbom.json
