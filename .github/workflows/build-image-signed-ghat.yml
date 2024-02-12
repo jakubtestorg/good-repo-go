@@ -37,6 +37,7 @@ jobs:
         id: sbom-gen
         run: |
           syft scan registry:ghcr.io/${{ github.repository }}:latest -o json > sbom.json
+          cat sbom.json
 
       - name: Read SBOM into environment variable
         id: sbom-read
