@@ -30,7 +30,7 @@ jobs:
           context: .
 
       - name: Attest image
-        uses: github-early-access/generate-build-provenance@main
+        uses: jhrozek/generate-build-provenance@add_sbom
         with:
           subject-name: ghcr.io/${{ github.repository }}
           subject-digest: ${{ steps.push-step.outputs.digest }}
