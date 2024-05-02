@@ -3,11 +3,17 @@ package main
 import (
 	"fmt"
 	"html"
-	"log"
 	"net/http"
+	"os"
+
+	"github.com/go-kit/log"
 )
 
 func main() {
+	w := log.NewSyncWriter(os.Stderr)
+	logger := log.NewLogfmtLogger(w)
+	logger.Log("question", "what is the meaning of life?", "answer", 42)
+
 	// comment
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
@@ -17,5 +23,5 @@ func main() {
 		fmt.Fprintf(w, "Hi There Yolanda!")
 	})
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	http.ListenAndServe(":8080", nil)
 }
